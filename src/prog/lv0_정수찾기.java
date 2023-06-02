@@ -18,7 +18,6 @@ public class lv0_정수찾기 {
 
             else end = mid - 1;
         }
-
         return 0;
     }
 }

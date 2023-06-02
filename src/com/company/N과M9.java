@@ -10,25 +10,24 @@ public class N과M9 {
     static StringBuilder sb;
     static Set<String> ans;
     public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-
-        arr = new int[N];
-        arr2 = new int[M];
-        visited = new boolean[N];
-        ans = new LinkedHashSet<>();
-
-        st = new StringTokenizer(br.readLine());
-        for(int i = 0 ; i < N ; i ++)
-            arr[i] = Integer.parseInt(st.nextToken());
-
-        Arrays.sort(arr);
-
-        perm(0);
-        ans.forEach((System.out::println));
+        int hp = 23;
+        int cnt = 0;
+        while(hp > 0){
+            if(hp > 5){
+                hp -= 5;
+                cnt++;
+            }
+            else if(hp > 3){
+                hp -= 3;
+                cnt++;
+            }
+            else if(hp > 1){
+                hp -= 1;
+                cnt++;
+            }
+        }
+        System.out.println(cnt);
+//        ans.forEach((System.out::println));
 
     }
 
