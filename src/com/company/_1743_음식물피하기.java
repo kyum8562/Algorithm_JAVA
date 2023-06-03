@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class _1743_음식물피하기 {
-    static int R, C, N, ans;
+    static int R, C, N, ans, cc;
     static boolean[][] v;
     static int[][] map;
 
@@ -31,7 +31,7 @@ public class _1743_음식물피하기 {
 
         map = new int[R + 1][C + 1];
         v = new boolean[R + 1][C + 1];
-        ans = 0;
+        ans = Integer.MIN_VALUE;
 
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -43,13 +43,32 @@ public class _1743_음식물피하기 {
         for (int i = 1; i <= R; i++) {
             for (int j = 1; j <= C; j++) {
                 if (!v[i][j] && map[i][j] == 1) {
-                    bfs(i, j);
+//                    bfs(i, j);
+                    cc = 0;
+                    v[i][j] = true;
+                    dfs(i, j, 1);
+                    ans = Math.max(ans, cc);
+
                 }
             }
-
         }
 
         System.out.println(ans);
+    }
+
+    private static void dfs(int i, int j, int cnt) {
+        cc++;
+        for (int d = 0; d < 4; d++) {
+            int nr = dr[d] + i;
+            int nc = dc[d] + j;
+
+            if (nr >= 1 && nr <= R && nc >= 1 && nc <= C) {
+                if (!v[nr][nc] && map[nr][nc] == 1) {
+                    v[nr][nc] = true;
+                    dfs(nr, nc, cnt + 1);
+                }
+            }
+        }
     }
 
     private static void bfs(int i, int j) {
