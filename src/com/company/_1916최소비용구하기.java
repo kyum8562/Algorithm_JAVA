@@ -47,7 +47,6 @@ public class _1916최소비용구하기 {
         st = new StringTokenizer(br.readLine());
         int start = Integer.parseInt(st.nextToken());
         int end = Integer.parseInt(st.nextToken());
-
         System.out.println(dijkstra(start, end));
     }
 
