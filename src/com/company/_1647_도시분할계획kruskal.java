@@ -1,9 +1,14 @@
 package com.company;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
-public class _164_도시분할계획 {
+public class _1647_도시분할계획kruskal {
     static int N, M, maxDist;
     static int ans;
     static List<Node>[] graph;
