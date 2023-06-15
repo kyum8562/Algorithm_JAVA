@@ -3,7 +3,7 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
-public class _16398_행성연결 {
+public class _16398_행성연결kruskal_list {
     static int N;
     static long ans;
     static List<Node> graph;
