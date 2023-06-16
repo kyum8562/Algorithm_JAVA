@@ -6,7 +6,6 @@ import java.util.*;
 public class _1922_네트워크연결kruskal {
     static int N, M, ans;
     static List<Node> graph;
-    static boolean[] v;
     static int[] parents;
     static class Node implements Comparable<Node>{
         int start;
@@ -31,7 +30,6 @@ public class _1922_네트워크연결kruskal {
         st = new StringTokenizer(br.readLine());
         M = Integer.parseInt(st.nextToken());
 
-        v = new boolean[N+1];
         parents = new int[N+1];
         graph = new ArrayList<>();
 
