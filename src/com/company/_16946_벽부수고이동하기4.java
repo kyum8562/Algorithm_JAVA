@@ -31,6 +31,7 @@ public class _16946_벽부수고이동하기4 {
         map = new int[N][M];
         ans = new int[N][M];
 
+        // 입력
         for (int i = 0; i < N; i++) {
             String s = br.readLine();
             for (int j = 0; j < M; j++) {
@@ -49,18 +50,15 @@ public class _16946_벽부수고이동하기4 {
         }
 
         for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                mapCount(i, j);
-            }
+            for (int j = 0; j < M; j++) mapCount(i, j);
         }
 
         for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                sb.append(ans[i][j]);
-            }
+            for (int j = 0; j < M; j++) sb.append(ans[i][j]);
             sb.append("\n");
         }
-        System.out.println(sb.toString());
+
+        System.out.println(sb);
     }
 
     private static void mapCount(int x, int y) {
@@ -74,9 +72,11 @@ public class _16946_벽부수고이동하기4 {
                 int nx = dx[d] + x;
                 int ny = dy[d] + y;
 
-                if (!isSquare(nx, ny) || map[nx][ny] == 1) continue;
+                if (isSquare(nx, ny) && map[nx][ny] == 0) {
+                    hs.add(map[nx][ny]);
 
-                hs.add(map[nx][ny]);
+                }
+
             }
 
             for (int a : hs) ans[x][y] += hm.get(a);
@@ -97,7 +97,7 @@ public class _16946_벽부수고이동하기4 {
                 int nx = dx[d] + curr.x;
                 int ny = dy[d] + curr.y;
 
-                if (isSquare(nx, ny) && map[nx][ny] == 0 && map[nx][ny] == 0) {
+                if (isSquare(nx, ny) && map[nx][ny] == 0) {
                     q.offer(new Node(nx, ny));
                     map[nx][ny] = groupNum;
                     count++;
