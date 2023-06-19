@@ -3,7 +3,7 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
-public class _14950_정복자 {
+public class _14950_정복자kruskal {
     static int N, M, T, ans, plusNum;
     static List<Node> graph;
     static int[] parents;
