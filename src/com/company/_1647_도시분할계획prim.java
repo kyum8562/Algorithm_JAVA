@@ -7,9 +7,7 @@ public class _1647_도시분할계획prim {
     static int N, M, maxDist;
     static int ans;
     static List<Node>[] graph;
-    static double[][] map;
     static boolean[] v;
-    static double[] dist;
     static class Node{
         int node;
         int dist;
