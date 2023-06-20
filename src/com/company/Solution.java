@@ -7,6 +7,11 @@ public class Solution {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println(br.readLine() + "??!");
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        long ans = 0;
+        for(int i = 0 ; i < 3 ; i ++){
+            ans += Long.parseLong(st.nextToken());
+        }
+        System.out.println(ans);
     }
 }
