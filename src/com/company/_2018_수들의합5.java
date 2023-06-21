@@ -3,7 +3,7 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
-public class _2018_수들의합 {
+public class _2018_수들의합5 {
     static int N;
 
     public static void main(String[] args) throws IOException {
