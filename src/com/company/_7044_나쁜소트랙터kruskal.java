@@ -2,7 +2,7 @@ package com.company;
 
 import java.io.*;
 import java.util.*;
-public class _7044_나쁜소트랙터 {
+public class _7044_나쁜소트랙터kruskal {
     static int N, M;
     static int[] parents;
     static List<Node> graph;
