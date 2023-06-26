@@ -2,34 +2,24 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int N, ans;
-    static int[] qArr;
+    static int[] dp;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int T = Integer.parseInt(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        qArr = new int[N];
+        for(int t = 1 ; t <= T ; t ++){
+            int tgt = Integer.parseInt(br.readLine());
 
-        for(int i = 0 ; i < N ; i ++){
-            st = new StringTokenizer(br.readLine());
-            qArr[i] = Integer.parseInt(st.nextToken());
+            dp = new int[11];
 
-            ans = 0;
-            play(1, qArr[i]);
-            play(2, qArr[i]);
-            play(3, qArr[i]);
-            System.out.println(ans);
+            dp[1] = 1;
+            dp[2] = 2;
+            dp[3] = 4;
+
+            for(int i = 4 ; i <= tgt ; i ++)
+                dp[i] = dp[i-1] + dp[i-2] + dp[i-3];
+
+            System.out.println(dp[tgt]);
         }
-    }
-
-    private static void play(int curr, int standard) {
-        if(curr > standard) return;
-        else if(curr == standard){
-                ans++;
-        }
-        play(1 + curr, standard);
-        play(2 + curr, standard);
-        play(3 + curr, standard);
     }
 }
