@@ -39,11 +39,8 @@ public class Main {
         endR = Integer.parseInt(st.nextToken()) - 1;
         endC = Integer.parseInt(st.nextToken()) - 1;
 
-        for(int n = 0; n < N; n++) {
-            String input = br.readLine();
-            for(int m = 0; m < M; m++)
-                map[n][m] = input.charAt(m); // *:주난, #:초코바, 1:친구, 0:빈공간
-        }
+        for(int i = 0; i < N; i++)
+            map[i] = br.readLine().toCharArray();
 
         System.out.println(dijkstra());
     }
