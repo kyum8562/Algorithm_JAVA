@@ -13,9 +13,7 @@ public class Main {
 
         @Override
         public int compareTo(Node o) {
-            if (this.l < o.l) return -1;
-            else if (this.l > o.l) return 1;
-            return 0;
+            return this.l - o.l;
         }
     }
 
