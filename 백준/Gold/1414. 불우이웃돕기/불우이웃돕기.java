@@ -1,4 +1,6 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -15,8 +17,10 @@ import java.util.*;
 
 public class Main {
     static int N;
-    static long finalAns = 0;
+    static long sum = 0;
     static int[] parents;
+    static List<Node> graph;
+
     static class Node implements Comparable<Node> {
         int start;
         int end;
@@ -43,7 +47,7 @@ public class Main {
 
         parents = new int[N + 1];
         for (int i = 1; i <= N; i++) parents[i] = i;
-        PriorityQueue<Node> pq = new PriorityQueue<>();
+        graph = new ArrayList<>();
 
         for (int i = 1; i <= N; i++) {
             char[] tmp = br.readLine().toCharArray();
@@ -54,22 +58,24 @@ public class Main {
                 else if (curr >= 49) curr -= 48;
                 else curr += 10;
 
-                pq.add(new Node(i, j + 1, curr));
+                graph.add(new Node(i, j + 1, curr));
                 totalSum += curr;
             }
         }
 
+        Collections.sort(graph);
+
         int used = 0;
-        while(!pq.isEmpty()){
-            Node curr = pq.poll();
+        for (int i = 0; i < graph.size(); i++) {
+            Node curr = graph.get(i);
             if (find(curr.start) != find(curr.end)) {
                 union(curr.start, curr.end);
-                finalAns += curr.dist;
+                sum += curr.dist;
                 used ++;
             }
         }
 
-        if(used == N-1) System.out.println(totalSum - finalAns);
+        if(used == N-1) System.out.println(totalSum - sum);
         else System.out.println(-1);
     }
 
