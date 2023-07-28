@@ -104,8 +104,7 @@ public class Main {
 
     private static void mapCopy() {
         for(int i = 0 ; i < N ; i ++){
-            for(int j = 0 ; j < M ; j ++)
-                copyMap[i][j] = map[i][j];
+            copyMap[i] = map[i].clone();
         }
     }
 
