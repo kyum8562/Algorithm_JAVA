@@ -1,15 +1,15 @@
 import java.io.*;
 import java.util.*;
+
 public class Main {
     static int N, M;
-    static int[] parents;
-    static List<Node> graph;
+    static int[] dist;
+    static List<Node>[] graph;
+    static boolean[] v;
     static class Node implements Comparable<Node>{
-        int start;
         int end;
         int dist;
-        public Node(int start, int end, int dist){
-            this.start = start;
+        public Node(int end, int dist){
             this.end = end;
             this.dist = dist;
         }
@@ -26,10 +26,11 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        graph = new ArrayList<>();
-        parents = new int[N+1];
+        dist = new int[N+1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
 
-        for(int i = 1 ; i <= N ; i ++) parents[i] = i;
+        graph = new ArrayList[N+1];
+        for(int i = 1 ; i <= N ; i ++) graph[i] = new ArrayList<>();
 
         for(int i = 1 ; i <= M ; i ++){
             st = new StringTokenizer(br.readLine());
@@ -38,41 +39,44 @@ public class Main {
             int e = Integer.parseInt(st.nextToken());
             int d = Integer.parseInt(st.nextToken());
 
-            graph.add(new Node(s, e, d));
+            graph[s].add(new Node(e, d));
+            graph[e].add(new Node(s, d));
         }
 
-        Collections.sort(graph);
+        int res = Integer.MIN_VALUE;
+        res = Math.max(res, prim(1));
 
-        int ans = 0;
-        for(int i = 0 ; i < M ; i ++){
-            Node curr = graph.get(i);
-
-            if(find(curr.start) != find(curr.end)){
-                ans += curr.dist;
-                union(curr.start, curr.end);
-            }
-        }
-
-        for(int i = 1 ; i < N ; i ++){
-            if(find(i) != find(i+1)){
-                ans = -1;
+        boolean flag = true;
+        for(int i = 1 ; i <= N ; i ++){
+            if(!v[i]){
+                flag = false;
                 break;
             }
         }
 
-        System.out.println(ans == -1 ? -1 : ans);
-
+        System.out.println(flag ? res : -1);
     }
 
-    private static int find(int x){
-        if(x == parents[x]) return x;
-        else return parents[x] = find(parents[x]);
-    }
-    private static void union(int x, int y){
-        x = find(x);
-        y = find(y);
+    private static int prim(int start) {
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.offer(new Node(start, 0));
+        v = new boolean[N+1];
+        int ans = 0;
 
-        if(x != y) parents[y] = x;
-        else parents[x] = y;
+        while(!pq.isEmpty()){
+            Node currNode = pq.poll();
+            int curr = currNode.end;
+
+            if(v[curr]) continue;
+            v[curr] = true;
+            ans += currNode.dist;
+
+            for(Node next: graph[curr]){
+                if(!v[next.end]){
+                    pq.offer(next);
+                }
+            }
+        }
+        return ans;
     }
 }
