@@ -1,133 +1,110 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
-class Main {
-
-    static int n;
-    static int m;
-
+public class Main {
+    static int N, M;
     static int[][] map;
-    static boolean[][] visited;
+    static boolean[][] v;
+    static int[] dr = {-1, 0, 1, 0};
+    static int[] dc = {0, 1, 0, -1};
+    static List<Integer> saveCheeseCnt = new ArrayList<>();
+    static class Node {
+        int r;
+        int c;
 
-    static final int[] dx = {0, 0, -1, 1};
-    static final int[] dy = {1, -1, 0, 0};
-    static List<Integer> list = new ArrayList<>(); // 치즈 개수가 들어갈 list
+        Node(int r, int c) {
+            this.r = r;
+            this.c = c;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
-        // input
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String s = br.readLine();
-        StringTokenizer st = new StringTokenizer(s, " ");
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-        map = new int[n][m];
-        visited = new boolean[n][m];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
 
-        for (int i = 0; i < n; i++) {
-            s = br.readLine();
-            st = new StringTokenizer(s, " ");
+        map = new int[N][M];
+        v = new boolean[N][M];
 
-            for (int j = 0; j < m; j++) {
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < M; j++)
                 map[i][j] = Integer.parseInt(st.nextToken());
-            }
         }
-        // input end
 
-        boolean flag = true; // 모든 치즈가 녹아 없어지면 flag는 false가 된다.
-        int time = 0; // 시간
-        int firstCount = getCount(); // 초기상태 치즈의 개수
+        boolean flag = true;
+        int time = 0;
+        int firstCheeseCnt = getCheeseCnt();
 
         while (flag) {
+
             time++;
 
-            bfs(new Location(0, 0));
+            // bfs 탐색: 가장자리 치즈 탐색
+            bfs(0, 0);
 
-            for (int i = 0; i < n; i++)
-                Arrays.fill(visited[i], false); // 다음 시간에 치즈를 녹이기 위해 visited 배열 전부 false를 넣어줌
+            // 치즈 제거
+            removeCheese();
 
-            int count = getCount();
+            // 방문 초기화
+            v = new boolean[N][M];
 
-            if (count == 0)
-                flag = false;
-            else
-                list.add(count);
+            // 치즈 개수 파악(마지막 치즈 개수 확인을 위해)
+            int currCheeseCnt = getCheeseCnt();
+
+            if(currCheeseCnt == 0) flag = false;
+            else saveCheeseCnt.add(currCheeseCnt);
         }
 
         System.out.println(time);
-
-        if (list.size() > 0) // 치즈가 전부 녹는데 2시간 이상인 경우
-            System.out.println(list.get(list.size() - 1));
-        else // 1시간만에 치즈가 다 녹는 경우 혹은 치즈가 하나도 없을 때.
-            System.out.println(firstCount);
+        if(saveCheeseCnt.size() > 0) System.out.println(saveCheeseCnt.get(saveCheeseCnt.size() - 1));
+        else System.out.println(firstCheeseCnt);
 
     }
 
-    // 0.0 부터 돌려서 1을 만나면 2로
+    private static void bfs(int i, int j) {
+        Queue<Node> q = new ArrayDeque<>();
+        v[i][j] = true;
+        q.offer(new Node(i, j));
 
-    static void bfs(Location location) {
+        while (!q.isEmpty()) {
+            Node curr = q.poll();
 
-        Queue<Location> queue = new LinkedList<>();
-        queue.add(location);
-        visited[location.x][location.y] = true;
+            for (int d = 0; d < 4; d++) {
+                int nr = curr.r + dr[d];
+                int nc = curr.c + dc[d];
 
-        while (!queue.isEmpty()) {
-            Location current = queue.poll();
+                if (!isValid(nr, nc)) continue;
+                if (v[nr][nc]) continue;
 
-            for (int i = 0; i < 4; i++) {
-                int nx = current.x + dx[i];
-                int ny = current.y + dy[i];
+                v[nr][nc] = true;
 
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
-                    if (!visited[nx][ny]) {
-                        if (map[nx][ny] == 1) { // 치즈의 모서리를 일단 2로 변경한다.
-                            map[nx][ny] = 2;
-                            visited[nx][ny] = true;
-                        }
-                        if (map[nx][ny] == 0) {
-                            visited[nx][ny] = true;
-                            queue.add(new Location(nx, ny));
-                        }
-                    }
-                }
+                // 다음 방문할 곳: 치즈
+                if (map[nr][nc] == 1) map[nr][nc] = 2;
+                    // 다음 방문할 곳: 빈 공간
+                else q.offer(new Node(nr, nc));
             }
         }
-
-        removeCheese(); // 배열의 값이 2면 치즈의 모서리이므로 0으로 바꾸어 녹여버림
     }
-
-    static void removeCheese() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (map[i][j] == 2)
+    private static int getCheeseCnt() {
+        int cheeseCnt = 0;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                if (map[i][j] == 1) cheeseCnt++;
+            }
+        }
+        return cheeseCnt;
+    }
+    private static void removeCheese() {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                if(map[i][j] == 2)
                     map[i][j] = 0;
             }
         }
     }
-
-    static int getCount() {
-
-        int count = 0;
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (map[i][j] == 1) {
-                    count++;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    static class Location {
-        int x;
-        int y;
-
-        public Location(int x, int y) {
-            this.x= x;
-            this.y = y;
-        }
+    private static boolean isValid(int nr, int nc) {
+        return (nr >= 0 && nr < N && nc >= 0 && nc < M);
     }
 }
