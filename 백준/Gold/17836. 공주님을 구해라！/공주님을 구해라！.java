@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
     static int N, M, T, ans = Integer.MAX_VALUE;
     static int[][] map;
-    static int[][][] v;
+    static boolean[][][] v;
 
     static class Node {
         int r;
@@ -32,7 +32,7 @@ public class Main {
         T = Integer.parseInt(st.nextToken());
 
         map = new int[N][M];
-        v = new int[N][M][2];
+        v = new boolean[N][M][2];
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < M; j++)
@@ -45,15 +45,14 @@ public class Main {
     private static void bfs(int sr, int sc) {
         Queue<Node> q = new ArrayDeque<>();
         q.offer(new Node(sr, sc, 0, false));
-        v[sr][sc][0] = 1;
+        v[sr][sc][0] = true;
 
         while (!q.isEmpty()) {
             Node curr = q.poll();
 
             if (curr.d > T) break;
             if (curr.r == N - 1 && curr.c == M - 1) {
-                int max = Math.max(v[curr.r][curr.c][0], v[curr.r][curr.c][1]);
-                ans = Math.min(ans, max);
+                ans = curr.d;
                 break;
             }
 
@@ -65,25 +64,20 @@ public class Main {
 
                 if (!curr.isGet) {
                     // 빈 공간 만남
-                    if (map[nr][nc] == 0 && v[nr][nc][0] == 0) {
+                    if (map[nr][nc] == 0 && !v[nr][nc][0]) {
                         q.offer(new Node(nr, nc, curr.d + 1, curr.isGet));
-                        v[nr][nc][0] = curr.d + 1;
+                        v[nr][nc][0] = true;
                     }
                     // 검 만남
-                    if (map[nr][nc] == 2 && v[nr][nc][1] == 0) {
+                    else if (map[nr][nc] == 2 && !v[nr][nc][1]) {
                         q.offer(new Node(nr, nc, curr.d + 1, true));
-                        v[nr][nc][1] = curr.d + 1;
+                        v[nr][nc][0] = true;
                     }
                 } else {
-                    // 벽 만남 && 검 있음
-                    if (map[nr][nc] == 1 && v[nr][nc][1] == 0) {
+                    // 검 있음
+                    if (!v[nr][nc][1]) {
                         q.offer(new Node(nr, nc, curr.d + 1, curr.isGet));
-                        v[nr][nc][1] = curr.d + 1;
-                    }
-                    // 빈 공간 만남
-                    if (map[nr][nc] == 0 && v[nr][nc][1] == 0) {
-                        q.offer(new Node(nr, nc, curr.d + 1, curr.isGet));
-                        v[nr][nc][1] = curr.d + 1;
+                        v[nr][nc][1] = true;
                     }
                 }
 
