@@ -61,12 +61,13 @@ public class Main {
             Node currNode = pq.poll();
             int curr = currNode.node;
 
-            if(dist[curr] < currNode.dist){
-				continue;
-			}
+            if(v[curr]) continue;
+            v[curr] = true;
+            if(dist[curr] < currNode.dist) continue;
+
 
             for(Node next: graph[curr]){
-                if(dist[next.node] > dist[curr] + next.dist){
+                if(!v[next.node] && dist[next.node] > dist[curr] + next.dist){
                     dist[next.node] = dist[curr] + next.dist;
                     pq.offer(new Node(next.node, dist[next.node]));
                 }
