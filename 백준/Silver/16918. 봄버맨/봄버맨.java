@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 public class Main {
-    static int R, C, N, time = 1;
+    static int R, C, N, time = 0;
     static char[][] map;
     static boolean[][] v;
     static List<Node> list;
@@ -33,7 +33,8 @@ public class Main {
         }
 
         while(true){
-            if(time == N) break;
+            if(++time == N) break;
+
             // 폭탄 위치 얻기
             list = new ArrayList<>();
             getBomb();
@@ -44,7 +45,6 @@ public class Main {
 
             // 폭탄 터뜨리기
             explosion();
-            time ++;
         }
 
         StringBuilder sb = new StringBuilder();
