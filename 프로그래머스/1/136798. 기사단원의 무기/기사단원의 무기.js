@@ -1,28 +1,31 @@
-let map;
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
 function solution(number, limit, power) {
-    map = new Array(number+1);
-    // 약수의 개수 구하기
-    // 카운팅
-    for(let i = 1 ; i <= number ; i ++){
-        yaksu(i);
-    }
-    console.log(map);
-    let ans = 0;
-    for(let i = 1 ; i <= number ; i ++){
-        if(limit >= map[i]) ans += map[i];
-        else ans += power;
-    }
-    
-    return ans;
-}
-function yaksu(n){
-    let cnt = 0;
-    for(let i = 1 ; i <= Math.sqrt(n) ; i ++){
-        if(n%i == 0){
-            if(i*i == n) cnt ++;
-            else cnt += 2;
+    var answer = 0;
+    for (let n = 1; n <= number; n++)
+    {
+        let count = 0;
+        for (let j = 1; j * j <= n; j++)
+        {
+            if (j * j == n) count++;
+            else if (n % j == 0) count += 2;
         }
+        if (count > limit) count = power;
+        answer += count;
     }
-    map[n] = cnt;
-    return;
+    return answer;
 }
