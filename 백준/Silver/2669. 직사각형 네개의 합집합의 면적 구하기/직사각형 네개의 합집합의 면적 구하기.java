@@ -26,16 +26,10 @@ public class Main {
     private static void calculating() {
         for(int i = 1 ; i <= 100 ; i ++){
             for(int j = 1 ; j <= 100 ; j ++){
-                if(map[i][j] >= 2){
-                    int tmp = map[i][j] - 1;
-                    map[i][j] -= tmp;
-                    ans -= tmp;
-                }
+                if(map[i][j] >= 2) ans -= map[i][j] - 1;
             }
         }
     }
-    // 입력받으면서 map에 카운팅하고,  맨해튼 거리 r2-r1 * c2-c1의 곱을 저장, 이후에 map에 카운팅 개수 -1 만큼 빼줌
-
     private static void marking(int r1, int c1, int r2, int c2) {
         for(int r = r1 ; r < r2 ; r ++){
             for(int c = c1 ; c < c2 ; c ++){
